@@ -33,5 +33,20 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
+  Router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('token') // atau 'auth_token', sesuaikan dengan aplikasi kamu
+    const isAuthenticated = !!token
+
+    if (to.meta.requiresAuth && !isAuthenticated) {
+      // Belum login → redirect ke halaman login
+      next('/login')
+    } else if (to.path === '/login' && isAuthenticated) {
+      // Sudah login tapi buka login → arahkan ke dashboard
+      next('/')
+    } else {
+      next()
+    }
+  })
+
   return Router
 })
