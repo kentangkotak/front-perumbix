@@ -8,6 +8,7 @@ const routes = [
       { path: '/profile', component: () => import('pages/Profile/IndexPage.vue') },
       { path: '/warga', component: () => import('pages/Warga/IndexPage.vue') },
       { path: '/iuranbulanan', component: () => import('pages/Iuranbulanan/IndexPage.vue') },
+      { path: '/belanja', component: () => import('pages/Belanja/IndexPage.vue') },
       {
         path: '/laporanpembayaran',
         component: () => import('pages/Laporanpembayaran/IndexPage.vue'),

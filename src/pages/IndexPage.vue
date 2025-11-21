@@ -52,7 +52,8 @@
       <div v-for="(group, tanggal) in groupedCuaca" :key="tanggal" class="q-mb-xl">
         <!-- Judul Tanggal -->
         <div class="text-h8 text-white q-mb-sm text-weight-bold text-center">
-          Prakiraan Cuaca untuk Tanggal <span class="text-h6"> {{ tanggal }}</span>
+          Prakiraan Cuaca untuk daerah PERUM Bengawan Indah pada Tanggal
+          <span class="text-h6"> {{ tanggal }}</span>
         </div>
 
         <!-- TABLE STYLE -->
@@ -61,7 +62,7 @@
           <div class="cuaca-row header">
             <div align="center">Jam</div>
             <div align="center">Suhu</div>
-            <div align="center">Hujan</div>
+            <!-- <div align="center">Hujan</div> -->
             <!-- <div>Angin</div> -->
             <div align="center">Cuaca</div>
           </div>
@@ -70,7 +71,7 @@
           <div class="cuaca-row" v-for="(item, i) in group" :key="i">
             <div align="center">{{ item.jam }}</div>
             <div align="center">{{ item.suhu }}°C</div>
-            <div align="center">{{ item.hujan }} mm</div>
+            <!-- <div align="center">{{ item.hujan }} mm</div> -->
             <!-- <div>{{ item.angin }} km/jam</div> -->
             <div align="center">{{ item.cuaca }}</div>
             <div align="center"><img :src="item.image" width="40" /></div>
