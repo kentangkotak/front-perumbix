@@ -14,6 +14,10 @@ const routes = [
         component: () => import('pages/Laporanpembayaran/IndexPage.vue'),
       },
       {
+        path: '/laporankas',
+        component: () => import('pages/Laporankas/IndexPage.vue'),
+      },
+      {
         path: 'logout',
         component: () => import('src/pages/LogoutPage.vue'),
       },
