@@ -21,12 +21,14 @@
 
         <!-- Versi PDF tersembunyi -->
         <div style="display: none">
-          <!-- <LaporanPDF
+          <LaporanPDF
             ref="pdfRef"
             :items="store.items"
-            :bulanx="store.params.bulan"
+            :bulanx="Number(store.params.bulan)"
             :tahun="store.params.tahun"
-          /> -->
+            :saldoawal="store.saldoawal"
+            :tanggaltutupsaldo="store.tanggaltutupsaldo"
+          />
         </div>
       </div>
     </div>
@@ -39,7 +41,7 @@ import { onMounted, ref } from 'vue'
 import html2pdf from 'html2pdf.js'
 import FormPencarian from './comp/FormPencarian.vue'
 import ListPage from './comp/ListPage.vue'
-// import LaporanPDF from './comp/LaporanPDF.vue'
+import LaporanPDF from './comp/LaporanPDF.vue'
 import { getNamaBulan } from 'src/utils/dateHelper'
 import { useBulanStore } from 'src/stores/bulan'
 import BottomBar from '../componen/BottomBar.vue'
@@ -53,25 +55,38 @@ onMounted(() => {
   storebulan.getlist()
 })
 
-function exportToPDF() {
+async function exportToPDF() {
   const element = pdfRef.value?.$el
   if (!element) return
 
   const namaBulan = getNamaBulan(store.params.bulan)
   const tahun = store.params.tahun
-
   const filename = `Kas_${namaBulan}_${tahun}.pdf`
 
-  html2pdf()
+  const pdf = await html2pdf()
     .set({
       margin: 0.5,
-      filename,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
     })
     .from(element)
-    .save()
+    .outputPdf('blob')
+
+  // Panggil File System Access API
+  const handle = await window.showSaveFilePicker({
+    suggestedName: filename,
+    types: [
+      {
+        description: 'PDF Files',
+        accept: { 'application/pdf': ['.pdf'] },
+      },
+    ],
+  })
+
+  const writable = await handle.createWritable()
+  await writable.write(pdf)
+  await writable.close()
 }
 </script>
 <style scoped>

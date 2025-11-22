@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+import router from 'src/router'
 import { onMounted, ref } from 'vue'
 
 const menuItems = ref([])
@@ -40,5 +41,12 @@ onMounted(() => {
       console.error('Gagal parse menu dari localStorage', e)
     }
   }
+
+  window.onpopstate = function () {
+    router.push({ name: '/' }) // arahkan ke home
+  }
+
+  // Tambahkan history agar back bisa ter-trigger
+  history.pushState(null, document.title, location.href)
 })
 </script>

@@ -53,25 +53,38 @@ onMounted(() => {
   storebulan.getlist()
 })
 
-function exportToPDF() {
+async function exportToPDF() {
   const element = pdfRef.value?.$el
   if (!element) return
 
   const namaBulan = getNamaBulan(store.params.bulan)
   const tahun = store.params.tahun
-
   const filename = `Kas_${namaBulan}_${tahun}.pdf`
 
-  html2pdf()
+  const pdf = await html2pdf()
     .set({
       margin: 0.5,
-      filename,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
     })
     .from(element)
-    .save()
+    .outputPdf('blob')
+
+  // Panggil File System Access API
+  const handle = await window.showSaveFilePicker({
+    suggestedName: filename,
+    types: [
+      {
+        description: 'PDF Files',
+        accept: { 'application/pdf': ['.pdf'] },
+      },
+    ],
+  })
+
+  const writable = await handle.createWritable()
+  await writable.write(pdf)
+  await writable.close()
 }
 </script>
 <style scoped>

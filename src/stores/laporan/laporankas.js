@@ -6,6 +6,7 @@ export const useLapKasStore = defineStore('lapKas', {
     items: [],
     loading: false,
     saldoawal: 0,
+    tanggaltutupsaldo: null,
     params: {
       bulan: new Date().getMonth() + 1,
       tahun: new Date().getFullYear(),
@@ -26,6 +27,7 @@ export const useLapKasStore = defineStore('lapKas', {
             const data = response.data || []
             this.olahdata(data)
             this.saldoawal = response.data?.saldoawal?.nominal
+            this.tanggaltutupsaldo = response.data?.saldoawal?.tgltutup
             this.loading = false
             resolve(response.data)
           })
@@ -39,41 +41,46 @@ export const useLapKasStore = defineStore('lapKas', {
       const masukx = data?.masuk || []
       const keluarx = data?.keluar || []
 
-      let saldo = data?.saldoawal?.nominal || 0
-      const masuklagi = masukx.map((x) => {
-        saldo += x.nominal
-        return {
+      // Gabung semua transaksi tanpa hitung saldo dulu
+      const semuaTransaksi = []
+
+      masukx.forEach((x) => {
+        semuaTransaksi.push({
           tanggal: x.created_at,
           notrans: x.notrans,
-          keterangan: x.keterangan ?? 'Iuran Warga',
+          keterangan: 'Iuran Warga',
           penjelasan: x.nama,
           nominal: x.nominal,
           jenis: 'masuk',
-          saldo: saldo, // saldo setelah transaksi
-        }
+        })
       })
 
-      const keluarlagi = []
       keluarx.forEach((x) => {
         x.rincian.forEach((y) => {
-          saldo -= y.subtotal
-          keluarlagi.push({
+          semuaTransaksi.push({
             tanggal: x.created_at,
             notrans: x.notrans,
             keterangan: x.keterangan,
             penjelasan: y.namabarang,
             nominal: y.subtotal,
             jenis: 'keluar',
-            saldo: saldo, // saldo setelah transaksi
           })
         })
       })
 
-      const gabung = masuklagi.concat(keluarlagi)
-      const hasil = gabung.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal))
+      // Urutkan semua transaksi berdasarkan tanggal
+      semuaTransaksi.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal))
 
-      this.items = hasil
-      console.log('gabung dengan saldo', hasil)
+      // Hitung saldo setelah diurutkan
+      let saldo = data?.saldoawal?.nominal || 0
+      semuaTransaksi.forEach((trx) => {
+        if (trx.jenis === 'masuk') saldo += trx.nominal
+        else saldo -= trx.nominal
+
+        trx.saldo = saldo
+      })
+
+      this.items = semuaTransaksi
     },
   },
 })

@@ -1,24 +1,25 @@
 <template>
   <q-page class="dashboard-bg">
     <div class="warga-grid">
+      <!-- Loading -->
       <template v-if="store.loading">
         <SkeletonCard v-for="n in 6" :key="'skeleton-' + n" />
       </template>
+
+      <!-- Konten setelah load -->
       <template v-else>
         <!-- Saldo Awal -->
         <q-card class="saldo-card">
           <div class="row q-pa-sm">
             <div class="col-6 warga-name">Saldo Awal</div>
-            <div class="col-6 warga-name text-right">Rp. {{ formatDouble(store.saldoawal) }}</div>
+            <div class="col-6 warga-name text-weight-bold text-right">
+              Rp. {{ formatDouble(store.saldoawal) }}
+            </div>
           </div>
         </q-card>
 
         <!-- Transaksi -->
-        <q-card-section
-          v-for="(x, index) in store.items"
-          :key="index"
-          :class="['trans-card', x.jenis]"
-        >
+        <q-card v-for="(x, index) in store.items" :key="index" :class="['warga-card', x.jenis]">
           <div class="row q-pa-sm">
             <div class="col-6">
               <div>{{ x.keterangan }}</div>
@@ -29,7 +30,7 @@
               <div class="saldo-akhir">Saldo: Rp. {{ formatDouble(x.saldo) }}</div>
             </div>
           </div>
-        </q-card-section>
+        </q-card>
       </template>
     </div>
   </q-page>
@@ -62,9 +63,9 @@ const store = useLapKasStore()
 /* CARD SALDO AWAL */
 .saldo-card {
   border-radius: 16px;
-  background: rgba(255, 215, 0, 0.1);
+  background: rgb(240, 216, 5);
   backdrop-filter: blur(12px);
-  color: #fff3b0;
+  color: #131101;
   font-weight: 600;
   padding: 12px;
 }
@@ -77,12 +78,35 @@ const store = useLapKasStore()
   color: #f5f5f5;
 }
 
+/* CARD WARGA */
+.warga-card {
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(30, 30, 30, 0.55);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+  color: #f5f5f5;
+  cursor: pointer;
+
+  transform: translateY(0);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.warga-card:hover {
+  transform: translateY(-8px);
+  background: rgba(50, 50, 50, 0.65);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+}
+
 /* masuk = hijau, keluar = merah */
-.trans-card.masuk {
+.warga-card.masuk {
   background: rgba(20, 150, 80, 0.25);
 }
 
-.trans-card.keluar {
+.warga-card.keluar {
   background: rgba(200, 40, 60, 0.25);
 }
 

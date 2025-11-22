@@ -23,7 +23,6 @@
       <div class="row q-col-gutter-sm">
         <!-- Kolom 1 -->
         <div class="col-4">
-          <div><strong>No:</strong> {{ index + 1 }}</div>
           <div><strong>Notrans:</strong> {{ item.notrans }}</div>
           <div><strong>Nama:</strong> {{ item.nama }}</div>
         </div>
