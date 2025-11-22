@@ -59,7 +59,7 @@ async function exportToPDF() {
 
   const namaBulan = getNamaBulan(store.params.bulan)
   const tahun = store.params.tahun
-  const filename = `Kas_${namaBulan}_${tahun}.pdf`
+  const filename = `Laporan_Pembayaran_Iuran_${namaBulan}_${tahun}.pdf`
 
   const pdf = await html2pdf()
     .set({
