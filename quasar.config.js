@@ -137,7 +137,20 @@ export default defineConfig((/* ctx */) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+      // workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+      workboxMode: 'InjectManifest',
+      workboxOptions: {
+        globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      }, // optional
+      chainWebpackCustomSW(config) {
+        config.entry('custom-service-worker').add('./src-pwa/custom-service-worker.js')
+      },
+      manifestFilename: 'manifest.json',
+      extendManifestJson: (json) => json,
+      fallback: {
+        html: 'index.html',
+      },
+
       // swFilename: 'sw.js',
       // manifestFilename: 'manifest.json',
       // extendManifestJson (json) {},

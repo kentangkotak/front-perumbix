@@ -21,8 +21,6 @@
         <FormPage v-else :data="item" @back="isList = true" :bulan="storeBulan.items" />
       </div>
     </div>
-
-    <BottomBar />
   </q-page>
 </template>
 
@@ -30,7 +28,7 @@
 import { onMounted, ref } from 'vue'
 import ListPage from './comp/ListPage.vue'
 import FormPage from './comp/FormPage.vue'
-import BottomBar from '../componen/BottomBar.vue'
+
 import { useBulanStore } from 'src/stores/bulan'
 import { useBelanjaStore } from 'src/stores/Belanja/belanja'
 

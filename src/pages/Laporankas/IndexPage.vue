@@ -32,7 +32,6 @@
         </div>
       </div>
     </div>
-    <BottomBar />
   </q-page>
 </template>
 
@@ -44,7 +43,6 @@ import ListPage from './comp/ListPage.vue'
 import LaporanPDF from './comp/LaporanPDF.vue'
 import { getNamaBulan } from 'src/utils/dateHelper'
 import { useBulanStore } from 'src/stores/bulan'
-import BottomBar from '../componen/BottomBar.vue'
 import { useLapKasStore } from 'src/stores/laporan/laporankas'
 
 const storebulan = useBulanStore()

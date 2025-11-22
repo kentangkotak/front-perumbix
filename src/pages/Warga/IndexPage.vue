@@ -20,8 +20,6 @@
         <FormPage v-else :data="item" @back="isList = true" />
       </div>
     </div>
-
-    <BottomBar />
   </q-page>
 </template>
 
@@ -30,7 +28,6 @@ import { onMounted, ref } from 'vue'
 import { useWargaStore } from 'src/stores/Warga/warga'
 import FormPage from './comp/FormPage.vue'
 import ListPage from './comp/ListPage.vue'
-import BottomBar from '../componen/BottomBar.vue'
 
 const store = useWargaStore()
 const isList = ref(true)

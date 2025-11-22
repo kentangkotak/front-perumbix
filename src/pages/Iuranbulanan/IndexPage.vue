@@ -30,8 +30,6 @@
         />
       </div>
     </div>
-
-    <BottomBar />
   </q-page>
 </template>
 
@@ -40,7 +38,6 @@ import { usePembayaranIuranBulananStore } from 'src/stores/iuranbulanan/iuranbul
 import { onMounted, ref } from 'vue'
 import ListPage from './comp/ListPage.vue'
 import FormPage from './comp/FormPage.vue'
-import BottomBar from '../componen/BottomBar.vue'
 import { useBulanStore } from 'src/stores/bulan'
 import { useWargaStore } from 'src/stores/Warga/warga'
 import { useNominalIuranStore } from 'src/stores/nominaliuran'
